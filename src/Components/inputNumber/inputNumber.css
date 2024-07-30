@@ -1,0 +1,43 @@
+
+.input{
+    border-radius: 3px;
+    height: 40px;
+    width: 100%;
+    font-size: 18px;
+    box-shadow: 5px 5px 5px silver;
+    padding: 0 0 0 10px;
+    border: none;
+    outline: none !important; 
+    background-color: var(--bg_input);
+
+}
+
+.input:focus {
+    border: none; 
+    outline: none !important; 
+}
+
+.errorMessage{
+    color: var(--color_error_message);
+    margin: 0;
+    font-size:smaller;
+}
+
+/* Fehlerklasse für das rote Umrahmen */
+.error-border {
+    border: 2px solid var(--color_error_message) !important;
+    background-color: var(--bg_error);
+}
+
+
+/* Für WebKit-basierte Browser */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Für Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

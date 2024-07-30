@@ -1,24 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import Rechner from './Components/rechner/rechner.jsx'
+import Auswertung from './Components/Auswertung/auswertung.jsx';
+import { CalculatorProvider, useCalculator } from './Components/CalculatorContext.js';
+import Berechnung from './Components/Berechnungen.js';
+
+function AppContent() {
+  const { calculatedData } = useCalculator();
+
+  return (
+    <div className="App">
+      <Berechnung/>
+      <Rechner />
+      {calculatedData && calculatedData.name.length > 0 && (
+        <Auswertung data={calculatedData} />
+      )}
+    </div>
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <CalculatorProvider>
+      <AppContent />
+    </CalculatorProvider>
   );
 }
 

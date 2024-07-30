@@ -1,0 +1,81 @@
+
+.containerInput{
+    border-radius: 10px;
+    box-shadow: 10px 20px 15px silver;
+    padding: 20px 45px 30px 30px;
+    background-color: #fff;
+    margin: 20px 0px;
+    min-width: 350px;
+}
+
+.szenario{
+    margin: 0 1rem;
+}
+
+.containerInput p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.rechner_input{
+    margin-top: 20px;
+    text-align: left;
+}
+
+.customSchrift{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.container_rechner{
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 1rem;
+}
+
+.container_rechner > *{
+    flex: 1;
+}
+
+.centerH1{
+   display: flex;
+   justify-content: center;
+}
+
+.customButton {
+    background-color:#53c687; 
+    color: #ffffff; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    max-width: 500px;
+    min-width: 350px
+  }
+  
+  /* Button-Hover-Effekt */
+  .customButton:hover {
+    background-color: #2c8756; 
+    transform: scale(1.05); 
+  }
+
+  .centerButton{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 2rem;
+  }
+
+@media only screen and (max-width: 1000px) {
+    .containerInput {
+        min-width: 200px;
+    }
+}

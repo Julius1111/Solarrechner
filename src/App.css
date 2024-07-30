@@ -1,38 +1,70 @@
 .App {
-  text-align: center;
+  width: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body{
+  background-color: var(--bg_gray);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+:root {
+  --bg_gray: #ECE9EA;
+  --bg_box: #EDF2F4; 
+  --bg_input: #f2f2f3;
+  --bg_input_active: #E0E0E0;
+  --bg_error: #ffe6e6;
+  --color_error_message: #ff0000; 
+  --color_text: #262626; 
+  --color_border: #6576;
+
+  --color_diagramm1: #7768AE;
+  --color_diagramm2: #2d8655; 
+  --color_diagramm3: #4D9DE0;
+  --color_diagramm4: #E1BC29;
+  --color_diagramm5: #e60000;
+
+
+  --color_overview1: #c3bddb;
+  --color_overview2: #b3e6ca;
+  --color_overview3: #a8d0f0;
+  --color_overview4: #f2e3a6;
+
+
+  --font-family: 'Arial', sans-serif;
+  --heading-font-family: 'Georgia', serif;
+  --primary-color: #333;
+  --secondary-color: #666;
+  --accent-color: #007bff;
+  --heading-margin: 1rem 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+/* Hauptüberschrift */
+.h1 {
+  font-family: var(--heading-font-family);
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin: var(--heading-margin);
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.5rem;
 }
 
-.App-link {
-  color: #61dafb;
+
+/* Sekundäre Überschrift */
+.h2 {
+  font-family: var(--heading-font-family);
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin: var(--heading-margin);
+  border-bottom: 1px solid var(--accent-color);
+  padding-bottom: 0.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Tertiäre Überschrift */
+.h3 {
+  font-family: var(--font-family);
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--secondary-color);
+  
 }
