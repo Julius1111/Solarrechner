@@ -4,8 +4,8 @@ import './auswertung.css';
 
 
 const Auswertung = ({ data}) => {
-    const chartData = data.name.map((year, index) => ({
-        name: year,
+    const chartData = data.jahr.map((year, index) => ({
+        jahr: year,
         gesErzeugtStrom: data.gesErzeugtStrom[index].toFixed(),
         eigErzeugtStrom: data.eigErzeugtStrom[index].toFixed(),
         Eigenverbrauch_in_Euro: data.eigErtrag[index].toFixed(),
@@ -110,7 +110,7 @@ const Auswertung = ({ data}) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="jahr" />
           <YAxis />
           <Tooltip />
           <Legend />
@@ -134,7 +134,7 @@ const Auswertung = ({ data}) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="jahr" />
           <YAxis />
           <Tooltip />
           <Legend />
@@ -159,7 +159,7 @@ const Auswertung = ({ data}) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="jahr" />
           <YAxis domain={[0, maximum]} />
           <Tooltip />
           <Legend />
@@ -183,7 +183,7 @@ const Auswertung = ({ data}) => {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="jahr" />
           <YAxis domain={[0, maximum]} />
           <Tooltip />
           <Legend />

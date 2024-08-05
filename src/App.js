@@ -12,7 +12,7 @@ function AppContent() {
     <div className="App">
       <Berechnung/>
       <Rechner />
-      {calculatedData && calculatedData.name.length > 0 && (
+      {calculatedData && calculatedData.jahr.length > 0 && (
         <Auswertung data={calculatedData} />
       )}
     </div>

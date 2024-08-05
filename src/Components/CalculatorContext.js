@@ -25,7 +25,7 @@ export const CalculatorProvider = ({ children }) => {
 
   // Berrechnerte Daten
   const [calculatedData, setCalculatedData] = useState({
-    name: '',
+    jahr: '',
     gesErzeugtStrom: 0,
     eigErzeugtStrom: 0,
     eigErtrag: 0,

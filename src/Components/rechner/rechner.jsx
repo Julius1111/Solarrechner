@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './rechner.css';
 import InputNumber from '../inputNumber/inputNumber.jsx';
 import InputRadioButton from '../inputRadioButton/inputRadioButton.jsx';
@@ -32,8 +32,6 @@ const Rechner = () => {
             console.log("error");
             return
         }
-        
-   
     };
 
   return (
@@ -53,13 +51,13 @@ const Rechner = () => {
                 <p>Einspeisemodell</p>
                 <InputRadioButton value={einspeiseModell} setValue={setEinspeiseModell} name1="Eigenverbrauch mit Überschusseinspeisung" name2="Volleinspeisung" id="Einspeisemodell"/>
             </div>
-            
-            
+                    
+                    
             <div className='rechner_input'>
                 <p>Anschafungskosten in €</p>
                 <InputNumber value={gesKosten} setValue={setGesKosten} setIsError={setIsError} />
             </div>
-            
+                    
             <div className='rechner_input'>
                 <p>Leistung der PV-Anlage in kWp</p>
                 <InputNumber value={leistung} setValue={setLeistung} setIsError={setIsError} />
@@ -154,13 +152,13 @@ const Rechner = () => {
     </div>
 
     <div className='centerButton'>
-        <button className='customButton' onClick={handleCalculation}>Berechnen</button>
-
+        <button className='customButton' onClick={handleCalculation}>Speichern</button>
+        
         {isError &&
-            <p>Bitte alle Felder ausfüllen</p>
+            <p className='errorMessage'>Bitte alle Felder ausfüllen</p>
         }
+
     </div>
-    
     
     </>
   );
