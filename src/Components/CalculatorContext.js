@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 
 // Context erstellen
 const CalculatorContext = createContext();
@@ -121,10 +121,6 @@ const loadeData = (id) => {
   } 
 }
 
-
-useEffect(() => {
-  console.log('storeData aktualisiert:', storeData);
-}, [storeData]);
 
   // Objekt erstellen 
   const value = {
