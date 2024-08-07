@@ -2,12 +2,14 @@ import React from 'react';
 import './rechner.css';
 import InputNumber from '../inputNumber/inputNumber.jsx';
 import InputRadioButton from '../inputRadioButton/inputRadioButton.jsx';
+import InputString from '../inputString/inputString.jsx'
 import { useCalculator } from '../CalculatorContext.js';
 
 const Rechner = () => {
   
     const {
         isError, setIsError,
+        idProjekt, setIdProjekt,
         einspeiseModell, setEinspeiseModell,
         gesKosten, setGesKosten,
         leistung, setLeistung,
@@ -22,24 +24,46 @@ const Rechner = () => {
         zeitRaum, setZeitRaum,
         vergleichRenditeProzent, setVergleichRenditeProzent,
         betriebsKostenEuroProzent, setBetriebsKostenEuroProzent,
-        betriebsKostenProzent, setBetriebsKostenProzent
+        betriebsKostenProzent, setBetriebsKostenProzent,
+        addOrUpdateData, loadeData 
       } = useCalculator();
 
-    
+
     const handleCalculation = () => {
         if(isError) // Abbruch bei fehlender Eingabe
         {
             console.log("error");
             return
         }
+
+        // Speichern der angegebenen Daten mit der Id (Name)
+        addOrUpdateData();
     };
+
+    const handleLoadeData = () => {
+        loadeData(idProjekt);
+    }
 
   return (
     <>
     <div className='centerH1'>
         <h1 >Solar Rechner</h1>
     </div>
-    
+
+    <div className='containerInput margin'>
+        <p className='customSchrift'>Projekt</p>
+
+        <div className='rechner_input '>
+            <p>Name des Projektes</p>
+            <InputString value={idProjekt} setValue={setIdProjekt} setIsError={setIsError}></InputString>
+        </div>
+
+        <div className='centerButton'>
+            <button className='customButton' onClick={handleLoadeData}>Loade Data</button>
+            <button className='customButton' onClick={handleCalculation}>Speichern</button>
+        </div>
+        
+    </div>
 
     <div className='container_rechner'>
         
@@ -152,11 +176,7 @@ const Rechner = () => {
     </div>
 
     <div className='centerButton'>
-        <button className='customButton' onClick={handleCalculation}>Speichern</button>
         
-        {isError &&
-            <p className='errorMessage'>Bitte alle Felder ausfüllen</p>
-        }
 
     </div>
     

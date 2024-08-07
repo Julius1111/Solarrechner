@@ -4,6 +4,7 @@ import './auswertung.css';
 
 
 const Auswertung = ({ data}) => {
+  try{
     const chartData = data.jahr.map((year, index) => ({
         jahr: year,
         gesErzeugtStrom: data.gesErzeugtStrom[index].toFixed(),
@@ -17,6 +18,7 @@ const Auswertung = ({ data}) => {
         vergleichRendite: data.vergleichRendite[index].toFixed(),
         ohne_Rendite: data.vergleichRenditeKonto[index].toFixed(),
     }));
+  
 
     function formatCurrency(value) {
         return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(value);
@@ -141,7 +143,6 @@ const Auswertung = ({ data}) => {
           <ReferenceLine y={0} stroke="#000" />
           <Bar dataKey="Überschuss_in_Euro" stackId="a" fill="#7768AE" />
           <Bar dataKey="Betriebskosten_in_Euro" stackId="a" fill="#ff7300" />
-          {/*<!--<Bar dataKey="gesErtrag" fill="#b4b4bc" /> */}
         </BarChart>
       </ResponsiveContainer>
 
@@ -193,10 +194,11 @@ const Auswertung = ({ data}) => {
         </LineChart>
       </ResponsiveContainer>
 
-      
         </div>
       </div>
     );
+  }
+  catch{}
 }
 
 export default Auswertung;

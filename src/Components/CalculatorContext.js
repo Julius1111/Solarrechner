@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Context erstellen
 const CalculatorContext = createContext();
@@ -6,6 +6,7 @@ const CalculatorContext = createContext();
 // Provider erstellen
 export const CalculatorProvider = ({ children }) => {
   // Zustandsvariablen
+  const [idProjekt, setIdProjekt] = useState("Projekt1");
   const [isError, setIsError] = useState(false);
   const [einspeiseModell, setEinspeiseModell] = useState('0');
   const [gesKosten, setGesKosten] = useState(15000);
@@ -25,7 +26,7 @@ export const CalculatorProvider = ({ children }) => {
 
   // Berrechnerte Daten
   const [calculatedData, setCalculatedData] = useState({
-    jahr: '',
+    jahr: [],
     gesErzeugtStrom: 0,
     eigErzeugtStrom: 0,
     eigErtrag: 0,
@@ -49,16 +50,86 @@ export const CalculatorProvider = ({ children }) => {
     co2Einsparung: 0,
   });
 
-    
 
   // Funktion zum Aktualisieren der berechneten Daten
   const updateCalculatedData = (newData) => {
     setCalculatedData(newData);
   };
 
-// Objekt erstellen 
-const value = {
+
+const [storeData, setStoreData] = useState([]);
+
+const addOrUpdateData = () => {
+
+  const data = {
+    idProjekt: idProjekt,
+    einspeiseModell: einspeiseModell,
+    gesKosten: gesKosten, 
+    leistung: leistung,
+    stromErtrag: stromErtrag, 
+    eigenVerbrauch: eigenVerbrauch, 
+    einspeiseVergutung: einspeiseVergutung, 
+    stromPreis: stromPreis, 
+    stromPreisErhohung: stromPreisErhohung, 
+    betriebsKosten: betriebsKosten, 
+    betriebsKostenErhohung: betriebsKostenErhohung, 
+    stromVerlust: stromVerlust, 
+    zeitRaum: zeitRaum, 
+    vergleichRenditeProzent: vergleichRenditeProzent, 
+    betriebsKostenEuroProzent: betriebsKostenEuroProzent, 
+    betriebsKostenProzent: betriebsKostenProzent, 
+  }
+
+  setStoreData((prevData) => {
+    // Prüfen, ob die ID bereits vorhanden ist
+    const index = prevData.findIndex((storeItem) => storeItem.idProjekt === idProjekt);
+    
+    if (index !== -1) {
+      // ID vorhanden, Daten aktualisieren
+      return prevData.map((storeItem) =>
+        storeItem.idProjekt === idProjekt ? { ...storeItem, ...data } : storeItem
+      );
+    } else {
+      // ID nicht gefunden, neues Objekt hinzufügen
+      return [...prevData, data];
+    }
+  });
+
+};
+
+const loadeData = (id) => {
+  
+  const index = storeData.findIndex((item) => item.idProjekt === id);
+  const objekt = storeData[index];
+  if (index !== -1) {
+    setIdProjekt(objekt.idProjekt);
+    setEinspeiseModell(objekt.einspeiseModell);
+    setGesKosten(objekt.gesKosten);
+    setLeistung(objekt.leistung);
+    setStromErtrag(objekt.stromErtrag);
+    setEigenVerbrauch(objekt.eigenVerbrauch);
+    setEinspeiseVergutung(objekt.einspeiseVergutung);
+    setStromPreis(objekt.stromPreis);
+    setStromPreisErhohung(objekt.stromPreisErhohung);
+    setBetriebsKosten(objekt.betriebsKosten);
+    setBetriebsKostenErhohung(objekt.betriebsKostenErhohung);
+    setStromVerlust(objekt.stromVerlust);
+    setZeitRaum(objekt.zeitRaum);
+    setVergleichRenditeProzent(objekt.vergleichRenditeProzent);
+    setBetriebsKostenEuroProzent(objekt.betriebsKostenEuroProzent);
+    setBetriebsKostenProzent(objekt.betriebsKostenProzent);
+  } 
+}
+
+
+useEffect(() => {
+  console.log('storeData aktualisiert:', storeData);
+}, [storeData]);
+
+  // Objekt erstellen 
+  const value = {
     isError, setIsError,
+    idProjekt, setIdProjekt,
     einspeiseModell, setEinspeiseModell,
     gesKosten, setGesKosten,
     leistung, setLeistung,
@@ -74,8 +145,11 @@ const value = {
     vergleichRenditeProzent, setVergleichRenditeProzent,
     betriebsKostenEuroProzent, setBetriebsKostenEuroProzent,
     betriebsKostenProzent, setBetriebsKostenProzent,
-    updateCalculatedData, calculatedData
-};
+    updateCalculatedData, calculatedData,
+    addOrUpdateData, 
+    loadeData,
+    storeData
+  };
 
   return (
     <CalculatorContext.Provider value={value}>
