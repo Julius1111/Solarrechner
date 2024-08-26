@@ -1,0 +1,55 @@
+.authContainer {
+    max-width: 500px;
+    margin: 0 auto;
+    
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  input[type="passwort"],
+  input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+  }
+
+
+  .authContainerButton{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .authContainer button{ 
+    margin: 1rem 0;
+  }
+
+  .switchButton{
+    background-color:darkgray; 
+    color: #ffffff; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    font-weight: bold; 
+    text-align: center; 
+    text-decoration: none; 
+    display: inline-block; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .switchButton:hover{
+    background-color: gray; 
+  }
+
+  

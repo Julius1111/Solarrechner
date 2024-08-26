@@ -1,9 +1,13 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, Line, LineChart } from 'recharts';
 import './auswertung.css';
+import {useCalculator} from '../CalculatorContext.js'
 
 
-const Auswertung = ({ data}) => {
+const Auswertung = () => {
+  const { calculatedData } = useCalculator();
+  const data = calculatedData; 
+  
   try{
     const chartData = data.jahr.map((year, index) => ({
         jahr: year,
@@ -13,7 +17,7 @@ const Auswertung = ({ data}) => {
         Einspeisevergütung_in_Euro: data.verErtrag[index].toFixed(),
         gesErtrag: data.gesErtrag[index].toFixed(),
         Überschuss_in_Euro: data.uberschuss[index].toFixed(),
-        Betriebskosten_in_Euro: data.betriebskosten[index].toFixed(),
+        Betriebskosten_in_Euro: data.gesBetriebsKosten[index].toFixed(),
         PV_überschuss_in_Euro: data.uberschussProJahr[index].toFixed(),
         vergleichRendite: data.vergleichRendite[index].toFixed(),
         ohne_Rendite: data.vergleichRenditeKonto[index].toFixed(),
@@ -40,10 +44,9 @@ const Auswertung = ({ data}) => {
     return (
 
     <div className='auswertung'>
-       
        <div className='centerDiv'>
         <div className='box_shadow_auswertung'>
-            <h1>Overview</h1>
+            <h1>Overview </h1>
             <div className='conteiner_auswertung'>
             <div className='box_auswertung color_pink'>
                 <p>Amortisation </p>

@@ -4,6 +4,7 @@ import InputNumber from '../inputNumber/inputNumber.jsx';
 import InputRadioButton from '../inputRadioButton/inputRadioButton.jsx';
 import InputString from '../inputString/inputString.jsx'
 import { useCalculator } from '../CalculatorContext.js';
+import supabase from '../../config/superbaseClient.js';
 
 const Rechner = () => {
   
@@ -25,24 +26,111 @@ const Rechner = () => {
         vergleichRenditeProzent, setVergleichRenditeProzent,
         betriebsKostenEuroProzent, setBetriebsKostenEuroProzent,
         betriebsKostenProzent, setBetriebsKostenProzent,
-        addOrUpdateData, loadeData 
+        loadeData ,
+        setSaveBerechnung, saveBerechnung
       } = useCalculator();
+      
+    let dataToSave = {idProjekt, einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent};
 
+    const saveData = async () => {
+        
+        // Prüfen ob bereits vorhanden
+        const { data: existingData, error: selectError } = await supabase
+            .from('Userinput')
+            .select('idProjekt')
+            .eq('idProjekt', idProjekt)
+            
 
-    const handleCalculation = () => {
-        if(isError) // Abbruch bei fehlender Eingabe
+        if (selectError) {
+            console.log('Fehler beim Überprüfen auf vorhandene Daten:', selectError);
+            return;
+        }
+
+        if (existingData && existingData.length > 0) { // existingData.length > 0 da sonst null sein könnte --> error
+            // daten updaten
+            const { error: updateError } = await supabase
+                .from('Userinput')
+                .update([dataToSave])
+                .eq('idProjekt', idProjekt)
+
+            if (updateError) {
+                  console.log('Fehler beim Aktualisieren des Datensatzes:', updateError);
+            }
+            return;
+        }
+
+        // falls nicht neu erstellen
+        const {data, error} = await supabase
+            .from('Userinput')
+            .insert([dataToSave])
+            .select()
+
+        if(error)
+        {
+            console.log(error);
+        }
+
+        if(data){
+            console.log(data);
+        }
+    }
+
+    const fatchData = async () => {
+        // Prüfen ob bereits vorhanden
+        const { data: existingData, error: selectError } = await supabase
+            .from('Userinput')
+            .select('idProjekt')
+            .eq('idProjekt', idProjekt)
+        
+           
+
+        if (selectError) {
+            console.log('Fehler beim Überprüfen auf vorhandene Daten:', selectError);
+            return;
+        }
+        
+        if (existingData && existingData.length > 0) {
+            const { data: fatchedData, error: fatchError } = await supabase
+                .from('Userinput')
+                .select('*')
+                .eq('idProjekt', idProjekt)
+                .single()
+            
+            if(fatchError)
+            {
+                console.log("Fatch error")
+                console.log(fatchError);
+            }
+
+            if(fatchedData)
+            {
+                loadeData(fatchedData);
+            }
+        }
+    }
+
+    const handleSave = () => {
+        // Abbruch bei fehlender Eingabe
+        if(isError) 
         {
             console.log("error");
             return
         }
 
-        // Speichern der angegebenen Daten mit der Id (Name)
-        addOrUpdateData();
+        // In Datenbank speichern
+        saveData();
+
+        // toggel variable to trigger function 
+         setSaveBerechnung(1);
+        
+        
+       
     };
 
     const handleLoadeData = () => {
-        loadeData(idProjekt);
+        fatchData();
     }
+
 
   return (
     <>
@@ -60,7 +148,7 @@ const Rechner = () => {
 
         <div className='centerButton'>
             <button className='customButton' onClick={handleLoadeData}>Loade Data</button>
-            <button className='customButton' onClick={handleCalculation}>Speichern</button>
+            <button className='customButton' onClick={handleSave}>Speichern</button>
         </div>
         
     </div>
@@ -177,7 +265,6 @@ const Rechner = () => {
 
     <div className='centerButton'>
         
-
     </div>
     
     </>

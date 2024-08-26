@@ -6,7 +6,8 @@ const CalculatorContext = createContext();
 // Provider erstellen
 export const CalculatorProvider = ({ children }) => {
   // Zustandsvariablen
-  const [idProjekt, setIdProjekt] = useState("Projekt1");
+  const [saveBerechnung, setSaveBerechnung] = useState(0);
+  const [idProjekt, setIdProjekt] = useState('Projekt1');
   const [isError, setIsError] = useState(false);
   const [einspeiseModell, setEinspeiseModell] = useState('0');
   const [gesKosten, setGesKosten] = useState(15000);
@@ -33,7 +34,7 @@ export const CalculatorProvider = ({ children }) => {
     verErtrag: 0,
     gesErtrag: 0,
     uberschuss: 0,
-    betriebskosten: 0,
+    gesBetriebsKosten: 0,
     amortisation: 0,
     uberschussProJahr: 0,
     gesKosten: 0,
@@ -57,51 +58,9 @@ export const CalculatorProvider = ({ children }) => {
   };
 
 
-const [storeData, setStoreData] = useState([]);
-
-const addOrUpdateData = () => {
-
-  const data = {
-    idProjekt: idProjekt,
-    einspeiseModell: einspeiseModell,
-    gesKosten: gesKosten, 
-    leistung: leistung,
-    stromErtrag: stromErtrag, 
-    eigenVerbrauch: eigenVerbrauch, 
-    einspeiseVergutung: einspeiseVergutung, 
-    stromPreis: stromPreis, 
-    stromPreisErhohung: stromPreisErhohung, 
-    betriebsKosten: betriebsKosten, 
-    betriebsKostenErhohung: betriebsKostenErhohung, 
-    stromVerlust: stromVerlust, 
-    zeitRaum: zeitRaum, 
-    vergleichRenditeProzent: vergleichRenditeProzent, 
-    betriebsKostenEuroProzent: betriebsKostenEuroProzent, 
-    betriebsKostenProzent: betriebsKostenProzent, 
-  }
-
-  setStoreData((prevData) => {
-    // Prüfen, ob die ID bereits vorhanden ist
-    const index = prevData.findIndex((storeItem) => storeItem.idProjekt === idProjekt);
-    
-    if (index !== -1) {
-      // ID vorhanden, Daten aktualisieren
-      return prevData.map((storeItem) =>
-        storeItem.idProjekt === idProjekt ? { ...storeItem, ...data } : storeItem
-      );
-    } else {
-      // ID nicht gefunden, neues Objekt hinzufügen
-      return [...prevData, data];
-    }
-  });
-
-};
-
-const loadeData = (id) => {
+const loadeData = (data) => {
   
-  const index = storeData.findIndex((item) => item.idProjekt === id);
-  const objekt = storeData[index];
-  if (index !== -1) {
+  const objekt = data;
     setIdProjekt(objekt.idProjekt);
     setEinspeiseModell(objekt.einspeiseModell);
     setGesKosten(objekt.gesKosten);
@@ -118,7 +77,6 @@ const loadeData = (id) => {
     setVergleichRenditeProzent(objekt.vergleichRenditeProzent);
     setBetriebsKostenEuroProzent(objekt.betriebsKostenEuroProzent);
     setBetriebsKostenProzent(objekt.betriebsKostenProzent);
-  } 
 }
 
 
@@ -141,10 +99,9 @@ const loadeData = (id) => {
     vergleichRenditeProzent, setVergleichRenditeProzent,
     betriebsKostenEuroProzent, setBetriebsKostenEuroProzent,
     betriebsKostenProzent, setBetriebsKostenProzent,
-    updateCalculatedData, calculatedData,
-    addOrUpdateData, 
+    updateCalculatedData, calculatedData, 
     loadeData,
-    storeData
+    saveBerechnung, setSaveBerechnung // trigger funktion to save on Database
   };
 
   return (

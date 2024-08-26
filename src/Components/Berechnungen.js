@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 import { useCalculator  } from "./CalculatorContext";
+import supabase from "../config/superbaseClient";
+import { getUserId } from "../config/superbaseClient";
 
 const Berechnung = () =>{
        
     const {
+        idProjekt,
         einspeiseModell, 
         gesKosten, 
         leistung,
@@ -19,27 +22,28 @@ const Berechnung = () =>{
         vergleichRenditeProzent, 
         betriebsKostenEuroProzent, 
         betriebsKostenProzent, 
-        updateCalculatedData
+        updateCalculatedData,
+        saveBerechnung, setSaveBerechnung,
       } = useCalculator();
     
-    const berechneUndAktualisieren = () => {
+    const berechneUndAktualisieren = (saveData) => {
         
         let verguetungEEG = 0; //Vergütung nach Einspeisevergütung
         let verguetungEig = 0; // Vergütung nach Eigenverbrauch
-        let uberschuss = []; // Jährlicher finanzieller Überschuss
+        
+        let jahr = [];
+        let gesErzeugtStrom = [];
+        let eigErzeugtStrom = [];
         let eigErtrag = []; // Ertrag aus Eigenverbrauch
         let verErtrag = []; // Ertrag aus Netzeinspeisung
-
         let gesErtrag = [];
+        let uberschuss = []; // Jährlicher finanzieller Überschuss
         let gesBetriebsKosten =[];
-        let pvStromErzeugt = [];
-        let pvStromErzeugtEig = [];
         let amortisation = -1;
-        let jahr = [];
         let uberschussProJahr = [];
-        let renditeProjahr;
-        let rendite;
         let gewinn; 
+        let rendite;
+        let renditeProjahr;
         let vergleichRendite = [];
         let vergleichRenditeKonto =[];
         let gesErzeugterStrom = 0;
@@ -89,14 +93,14 @@ const Berechnung = () =>{
             }
 
             // Erzeugter Strom
-            pvStromErzeugt[i] = erzeugterStrom * leistung;
-            pvStromErzeugtEig[i] = pvStromErzeugt[i] * eig;
-            gesErzeugterStrom += pvStromErzeugt[i];
-            gesErzeugterStromEig += pvStromErzeugtEig[i];
+            gesErzeugtStrom[i] = erzeugterStrom * leistung;
+            eigErzeugtStrom[i] = gesErzeugtStrom[i] * eig;
+            gesErzeugterStrom += gesErzeugtStrom[i];
+            gesErzeugterStromEig += eigErzeugtStrom[i];
 
             // Ertrag
-            eigErtrag[i] = pvStromErzeugt[i]  * verguetungEig;
-            verErtrag[i] = pvStromErzeugt[i] * verguetungEEG; 
+            eigErtrag[i] = gesErzeugtStrom[i]  * verguetungEig;
+            verErtrag[i] = gesErzeugtStrom[i] * verguetungEEG; 
             gesErtrag[i] = eigErtrag[i] + verErtrag[i];
 
             gesErtragEig += eigErtrag[i];
@@ -159,14 +163,15 @@ const Berechnung = () =>{
 
         // Objekt erstellen
         const data = {
+            idProjekt: idProjekt,
             jahr: jahr,
-            gesErzeugtStrom: pvStromErzeugt,
-            eigErzeugtStrom: pvStromErzeugtEig,
+            gesErzeugtStrom: gesErzeugtStrom,
+            eigErzeugtStrom: eigErzeugtStrom,
             eigErtrag: eigErtrag,
             verErtrag: verErtrag,
             gesErtrag: gesErtrag,
             uberschuss: uberschuss,
-            betriebskosten: gesBetriebsKosten,
+            gesBetriebsKosten: gesBetriebsKosten,
             amortisation: amortisation,
             uberschussProJahr: uberschussProJahr,
             gesKosten: gesKosten,
@@ -183,14 +188,72 @@ const Berechnung = () =>{
             co2Einsparung: co2Einsparung,
         };
 
+        // nur Daten speichern wenn gewünscht 
+        if(saveBerechnung === 1 ){ 
+            setSaveBerechnung(0);
+
+            
+            
+            // aulagern (clean code)
+            const saveData = async () => {
+
+                // get user id
+                const userId = await getUserId();
+                if (!userId) {
+                    throw new Error("User is not authenticated");
+                }
+
+                // Prüfen ob bereits vorhanden
+                const { data: existingData, error: selectError } = await supabase
+                    .from('CalculadedData')
+                    .select('idProjekt')
+                    .eq('idProjekt', idProjekt)
+                
+                if (selectError) {
+                    console.log('Fehler beim Überprüfen auf vorhandene Daten:', selectError);
+                    return;
+                }
+
+                if (existingData && existingData.length > 0) { // existingData.length > 0 da sonst null sein könnte --> error
+                    // daten updaten
+                    const { error: updateError } = await supabase
+                        .from('CalculadedData')
+                        .update([data])
+                        .eq('idProjekt', idProjekt)
+
+                    if (updateError) {
+                        console.log('Fehler beim Aktualisieren des Datensatzes:', updateError);
+                    }
+                    return;
+                }
+
+                // falls nicht neu erstellen
+                const {savedData, error} = await supabase
+                    .from('CalculadedData')
+                    .insert([data]) // user id übergeben
+                    .select()
+
+                if(error)
+                {
+                    console.log(error);
+                }
+
+                if(savedData){
+                    console.log(saveData);
+                }
+            }
+
+            saveData();
+        }
+    
+
         updateCalculatedData(data);
-        
     };
 
     // bei änderung Aktualisieren
     useEffect(() => {
         berechneUndAktualisieren();
-      }, [einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent]);
+      }, [saveBerechnung ,einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent]);
 
     return null;
 }
