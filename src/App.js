@@ -1,24 +1,34 @@
 import './App.css';
 import React from 'react';
-import Rechner from './Components/rechner/rechner.jsx'
 import { CalculatorProvider } from './Components/CalculatorContext.js';
 import Berechnung from './Components/Berechnungen.js';
-import SwitchAuswertung from './Components/Auswertung/switchAusertung.jsx'
 import Auth from './Components/auth/auth.jsx';
+import ProtectedRoute from './Components/controleLogin/ProtectedRoute.jsx';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Rechner from './Components/Rechner/rechner.jsx';
 
 function AppContent() {
-  
 
   return (
-    <div className="App">
-      <Auth></Auth>
-
-      <Berechnung/>
-      <Rechner />
-
-      <SwitchAuswertung/>
+    <Router>
+      <div className="App">
       
-    </div>
+        <Berechnung/>
+
+        <Routes>
+          <Route path="/" element={<Auth/>}> </Route>
+          
+          <Route path="/rechner" element={
+            <ProtectedRoute>
+              <Rechner/> 
+            </ProtectedRoute>}> 
+          </Route>
+            
+        </Routes>
+
+      </div>
+    </Router>
+
   );
 }
 

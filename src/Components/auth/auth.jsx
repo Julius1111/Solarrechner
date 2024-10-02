@@ -1,11 +1,14 @@
 import React, { useState, useRef } from "react";
 import "./auth.css"
+import { useNavigate } from 'react-router-dom';
 
-import { loginUser, registerUser } from "../../config/superbaseClient";
+import supabase, { loginUser, registerUser, anonymLogin } from "../../config/superbaseClient";
 
 
 const Auth = () => {
     
+    const navigate = useNavigate();
+
     const login = "Login"
     const singUp = "Singup"
 
@@ -28,34 +31,67 @@ const Auth = () => {
 
     const passwortRef = useRef(null);
     const emailRef = useRef(null);
+    
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
         const email = emailRef.current.value;
         const passwort = passwortRef.current.value;
+        let response;
 
-        if(currend === login)
-        {
-            setError(loginUser(email, passwort))
+        try{
+            if(currend === login)
+            {
+                response = await loginUser(email, passwort)
+            }
+            else{
+                response = await registerUser(email, passwort)
+            }
+
+
+            // fehler bei Registrierung
+            if(response.error)
+            {
+                setError(response.error.message)
+                console.log(response.error.message);  
+            } else 
+            {   
+                
+                // weiter zu rechner
+                navigate('/rechner');
+            }
         }
-        else{
-            setError(registerUser(email, passwort))
+        catch (err){
+            setError(err);
         }
-
-        // fehler bei Registrierung
-        if(error)
-        {
-            return
-        }
-
-
     };
+
+    const handelAnonymLogin = async () => {
+        try {
+            // Anonymen Benutzer anmelden
+            const { data, error } = await supabase.auth.signInAnonymously();
+    
+            if (error) {
+                console.error("Fehler beim anonymen Login:", error.message);
+                return;
+            }
+    
+            navigate('/rechner')
+        } catch (error) {
+            console.error("Ein Fehler ist aufgetreten:", error.message);
+        }
+    };
+    
+    
+    
 
     return (
     <div className="authContainer containerInput">
 
         <h1>{currend}</h1>
+
+        
 
         <form onSubmit={handleSubmit}>
             
@@ -67,9 +103,9 @@ const Auth = () => {
                 required
             />
 
-            <label htmlFor="passwort">Passwort:</label>
+            <label htmlFor="password">Passwort:</label>
             <input
-                type="passwort"
+                type="password"
                 id="passwort"
                 ref={passwortRef}
                 required
@@ -82,7 +118,13 @@ const Auth = () => {
 
         
         <button className="switchButton" onClick={togel}>{"Go to " + loginSingup}</button>
+
+        <button className="switchButton" onClick={handelAnonymLogin}> weiter als Gast </button>
         
+        {error != null &&
+            <p className="errorMessage"> {error}</p>
+        }
+
     </div>
     
     );

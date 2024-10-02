@@ -1,8 +1,12 @@
 .authContainer {
-    max-width: 500px;
-    margin: 0 auto;
-    
-  }
+  max-width: 500px;
+  margin: auto !important; /* Horizontale Zentrierung */
+  position: absolute;
+  top: 50%;    
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+}
+
   
   label {
     display: block;
@@ -10,15 +14,19 @@
     font-weight: bold;
   }
   
-  input[type="passwort"],
+  input[type="password"],
   input[type="email"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-bottom: 16px;
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 16px;
+      appearance: none; 
+      -webkit-appearance: none; 
+      -moz-appearance: none; 
   }
+  
 
 
   .authContainerButton{
