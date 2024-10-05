@@ -10,8 +10,6 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user }, error } = await supabase.auth.getUser(); // Benutzer abfragen
-      
-      console.log(user);
 
       if (error) {
         console.error("Fehler beim Abrufen des Benutzers:", error);

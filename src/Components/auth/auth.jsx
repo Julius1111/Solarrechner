@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import "./auth.css"
 import { useNavigate } from 'react-router-dom';
 
-import supabase, { loginUser, registerUser, anonymLogin } from "../../config/superbaseClient";
+import supabase, { loginUser, registerUser } from "../../config/superbaseClient";
 
 
 const Auth = () => {
@@ -70,7 +70,7 @@ const Auth = () => {
     const handelAnonymLogin = async () => {
         try {
             // Anonymen Benutzer anmelden
-            const { data, error } = await supabase.auth.signInAnonymously();
+            const { error } = await supabase.auth.signInAnonymously();
     
             if (error) {
                 console.error("Fehler beim anonymen Login:", error.message);

@@ -27,7 +27,7 @@ const Rechner = () => {
         betriebsKostenEuroProzent, setBetriebsKostenEuroProzent,
         betriebsKostenProzent, setBetriebsKostenProzent,
         loadeData ,
-        setSaveBerechnung, saveBerechnung
+        setSaveBerechnung, 
       } = useCalculator();
       
     let dataToSave = {idProjekt, einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent};
@@ -76,6 +76,9 @@ const Rechner = () => {
     }
 
     const fatchData = async () => {
+
+        
+
         // Prüfen ob bereits vorhanden
         const { data: existingData, error: selectError } = await supabase
             .from('Userinput')
