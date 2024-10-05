@@ -192,8 +192,6 @@ const Berechnung = () =>{
         if(saveBerechnung === 1 ){ 
             setSaveBerechnung(0);
 
-            
-            
             // aulagern (clean code)
             const saveData = async () => {
 

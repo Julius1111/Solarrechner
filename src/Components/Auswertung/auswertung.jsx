@@ -42,7 +42,6 @@ const Auswertung = () => {
     const co2Einsparung = data.co2Einsparung.toFixed(2);
 
     return (
-
     <div className='auswertung'>
        <div className='centerDiv'>
         <div className='box_shadow_auswertung'>
