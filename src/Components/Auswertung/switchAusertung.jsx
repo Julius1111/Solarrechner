@@ -4,6 +4,7 @@ import Auswertung from "./auswertung";
 import supabase from "../../config/superbaseClient";
 import './dropDown.css';
 import DynamicTable from "./dynamicTable";
+import Charts from "./charts";
 
 const SwitchAuswertung = () => {
     
@@ -31,7 +32,7 @@ const SwitchAuswertung = () => {
     }    
 
     const handleSelection = (id) =>{
-
+        
         // prüfen ob id berreits vorhanden
         if(selectedIDs.includes(id)) return
 
@@ -120,7 +121,10 @@ const SwitchAuswertung = () => {
         }
 
         {switchValue === '1' &&
-          <DynamicTable rawData={dataIds}></DynamicTable> 
+            <>
+            <DynamicTable rawData={dataIds}></DynamicTable> 
+            <Charts rawData={dataIds}></Charts>
+            </>
         }
 
     </>

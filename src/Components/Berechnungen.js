@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useCalculator  } from "./CalculatorContext";
 import supabase from "../config/superbaseClient";
-import { getUserId } from "../config/superbaseClient";
 
 const Berechnung = () =>{
        
@@ -194,12 +193,6 @@ const Berechnung = () =>{
 
             // aulagern (clean code)
             const saveData = async () => {
-
-                // get user id
-                const userId = await getUserId();
-                if (!userId) {
-                    throw new Error("User is not authenticated");
-                }
 
                 // Prüfen ob bereits vorhanden
                 const { data: existingData, error: selectError } = await supabase

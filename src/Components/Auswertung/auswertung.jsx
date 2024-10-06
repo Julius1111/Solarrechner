@@ -13,33 +13,35 @@ const Auswertung = () => {
         jahr: year,
         gesErzeugtStrom: data.gesErzeugtStrom[index].toFixed(),
         eigErzeugtStrom: data.eigErzeugtStrom[index].toFixed(),
-        Eigenverbrauch_in_Euro: data.eigErtrag[index].toFixed(),
-        Einspeisevergütung_in_Euro: data.verErtrag[index].toFixed(),
+        Eigenverbrauch: data.eigErtrag[index].toFixed(),
+        Einspeisevergütung: data.verErtrag[index].toFixed(),
         gesErtrag: data.gesErtrag[index].toFixed(),
-        Überschuss_in_Euro: data.uberschuss[index].toFixed(),
-        Betriebskosten_in_Euro: data.gesBetriebsKosten[index].toFixed(),
-        PV_überschuss_in_Euro: data.uberschussProJahr[index].toFixed(),
+        Überschuss: data.uberschuss[index].toFixed(),
+        Betriebskosten: data.gesBetriebsKosten[index].toFixed(),
+        PV_überschuss: data.uberschussProJahr[index].toFixed(),
         vergleichRendite: data.vergleichRendite[index].toFixed(),
         ohne_Rendite: data.vergleichRenditeKonto[index].toFixed(),
     }));
-  
 
     function formatCurrency(value) {
         return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(value);
+    }
+    function formatNumber(value) {
+      return new Intl.NumberFormat('de-DE', { maximumFractionDigits: 2 }).format(value);
     }
 
     const maxWert = Math.max(...data.uberschussProJahr).toFixed();
     const maximum = Math.ceil(maxWert / 500) * 500;
     
-    const gesErzeugterstrom = data.gesErzeugterStrom.toFixed();
-    const gesErzeugterstromEig = data.gesErzeugterStromEig.toFixed();
-    const amortisation = data.amortisation.toFixed()
-    const gesKosten = data.gesKosten.toFixed();
+    const gesErzeugterstrom = formatNumber(data.gesErzeugterStrom);
+    const gesErzeugterstromEig = formatNumber(data.gesErzeugterStromEig);
+    const amortisation = formatNumber(data.amortisation)
+    const gesKosten = data.gesKosten;
     const gewinn = formatCurrency( data.gewinn.toFixed(2));
-    const renditeProJahr = data.renditeProJahr.toFixed(2)
-    const rendite = data.rendite.toFixed(2);
+    const renditeProJahr = formatNumber(data.renditeProJahr)
+    const rendite = formatNumber(data.rendite)
     const gesUberschuss = formatCurrency(data.gesUberschuss.toFixed(2));
-    const co2Einsparung = data.co2Einsparung.toFixed(2);
+    const co2Einsparung = formatNumber(data.co2Einsparung);
 
     return (
     <div className='auswertung'>
@@ -118,8 +120,8 @@ const Auswertung = () => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="Eigenverbrauch_in_Euro" stackId="a" fill="#3BB273" />
-          <Bar dataKey="Einspeisevergütung_in_Euro" stackId="a" fill="#4D9DE0" />
+          <Bar dataKey="Eigenverbrauch" stackId="a" fill="#3BB273" />
+          <Bar dataKey="Einspeisevergütung" stackId="a" fill="#4D9DE0" />
         </BarChart>
       </ResponsiveContainer>
 
@@ -139,12 +141,12 @@ const Auswertung = () => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="jahr" />
-          <YAxis />
-          <Tooltip />
+          <YAxis tickFormatter={formatCurrency} />
+          <Tooltip formatter={(value) => formatCurrency(value)} />
           <Legend />
           <ReferenceLine y={0} stroke="#000" />
-          <Bar dataKey="Überschuss_in_Euro" stackId="a" fill="#7768AE" />
-          <Bar dataKey="Betriebskosten_in_Euro" stackId="a" fill="#ff7300" />
+          <Bar dataKey="Überschuss" stackId="a" fill="#7768AE" />
+          <Bar dataKey="Betriebskosten" stackId="a" fill="#ff7300" />
         </BarChart>
       </ResponsiveContainer>
 
@@ -163,11 +165,11 @@ const Auswertung = () => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="jahr" />
-          <YAxis domain={[0, maximum]} />
-          <Tooltip />
+          <YAxis domain={[0, maximum]} tickFormatter={formatCurrency} />
+          <Tooltip formatter={(value) => formatCurrency(value)} />
           <Legend />
           <ReferenceLine y={gesKosten} stroke="#ff1c09" label={{ position: 'insideTopLeft', value: 'Amortisation ', fill: '#ff1c09' }} />
-          <Bar dataKey="PV_überschuss_in_Euro" fill="#4D9DE0" />
+          <Bar dataKey="PV_überschuss" fill="#4D9DE0" />
           
         </BarChart>
       </ResponsiveContainer>
@@ -187,10 +189,10 @@ const Auswertung = () => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="jahr" />
-          <YAxis domain={[0, maximum]} />
-          <Tooltip />
+          <YAxis domain={[0, maximum]} tickFormatter={formatCurrency} />
+          <Tooltip formatter={(value) => formatCurrency(value)} />
           <Legend />
-          <Line type="monotone" dataKey="PV_überschuss_in_Euro" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="PV_überschuss" stroke="#8884d8" activeDot={{ r: 8 }} />
           <Line type="monotone" dataKey="vergleichRendite" stroke="#ff1c09" activeDot={{ r: 8 }} />
           <Line type="monotone" dataKey="ohne_Rendite" stroke="#3BB273" activeDot={{ r: 8 }} />
         </LineChart>
