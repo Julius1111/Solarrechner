@@ -4,6 +4,11 @@
 
 Der **Solarrechner** ist eine Webanwendung zur Berechnung der Rentabilität einer Solaranlage. Nutzer können ihre Daten eingeben, um eine Berechnung der Einsparungen, Energieerzeugung und des Amortisationszeitraums zu erhalten. Das Backend verwendet Supabase für Benutzer-Authentifizierung und Datenverwaltung. Es gibt die Möglichkeit, sich entweder mit E-Mail und Passwort zu authentifizieren oder anonym einzuloggen.
 
+## Live-Demo
+
+Sie können den Solarrechner unter folgendem Link testen:
+[Solarrechner Demo](https://julius1111.github.io/solarrechner/)
+
 ## Features
 
 - **Benutzer-Authentifizierung:**
