@@ -50,7 +50,7 @@ const Auth = () => {
             }
 
 
-            // fehler bei Registrierung
+            // fehler bei Registrierung 
             if(response.error)
             {
                 setError(response.error.message)
