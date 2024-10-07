@@ -3,7 +3,8 @@ import { useCalculator  } from "./CalculatorContext";
 import supabase from "../config/superbaseClient";
 
 const Berechnung = () =>{
-       
+    
+    // import data from input
     const {
         idProjekt,
         einspeiseModell, 
@@ -25,18 +26,19 @@ const Berechnung = () =>{
         saveBerechnung, setSaveBerechnung,
       } = useCalculator();
     
-    const berechneUndAktualisieren = (saveData) => {
+
+    const berechneUndAktualisieren = () => {
         
-        let verguetungEEG = 0; //Vergütung nach Einspeisevergütung
-        let verguetungEig = 0; // Vergütung nach Eigenverbrauch
-        
+        // Variablen für die Berechnung
+        let verguetungEEG = 0; 
+        let verguetungEig = 0; 
         let jahr = [];
         let gesErzeugtStrom = [];
         let eigErzeugtStrom = [];
-        let eigErtrag = []; // Ertrag aus Eigenverbrauch
-        let verErtrag = []; // Ertrag aus Netzeinspeisung
+        let eigErtrag = []; 
+        let verErtrag = [];
         let gesErtrag = [];
-        let uberschuss = []; // Jährlicher finanzieller Überschuss
+        let uberschuss = []; 
         let gesBetriebsKosten =[];
         let amortisation = -1;
         let uberschussProJahr = [];
@@ -51,11 +53,10 @@ const Berechnung = () =>{
         let gesErtragVer = 0;
         let gesUberschuss = 0;
         let co2Einsparung = 0;
-
         let stromKosten = stromPreis;
         let erzeugterStrom = stromErtrag; 
         let betrieb = betriebsKosten;
-        let eig = eigenVerbrauch / 100.0; // eigenverbrauch als Dezimalzahl
+        let eig = eigenVerbrauch / 100.0; 
         const faktorBetKostErhohung = betriebsKostenErhohung / 100;
         const faktorStromVerlust = stromVerlust / 100.0;
         const faktorVergleichsRendite = 1 + vergleichRenditeProzent / 100.0;
@@ -187,11 +188,10 @@ const Berechnung = () =>{
             co2Einsparung: co2Einsparung,
         };
 
-        // nur Daten speichern wenn gewünscht 
+        // nur Daten speichern wenn Button gedrückt wird 
         if(saveBerechnung === 1 ){ 
             setSaveBerechnung(0);
 
-            // aulagern (clean code)
             const saveData = async () => {
 
                 // Prüfen ob bereits vorhanden
@@ -221,23 +221,18 @@ const Berechnung = () =>{
                 // falls nicht neu erstellen
                 const {savedData, error} = await supabase
                     .from('CalculadedData')
-                    .insert([data]) // user id übergeben
+                    .insert([data]) 
                     .select()
 
                 if(error)
                 {
                     console.log(error);
                 }
-
-                if(savedData){
-                    console.log(saveData);
-                }
             }
 
             saveData();
         }
     
-
         updateCalculatedData(data);
     };
 

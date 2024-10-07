@@ -1,6 +1,6 @@
 .authContainer {
   max-width: 500px;
-  margin: auto !important; /* Horizontale Zentrierung */
+  margin: auto !important; 
   position: absolute;
   top: 50%;    
   left: 50%; 
@@ -8,7 +8,7 @@
 }
 
   
-  label {
+ .authContainer label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;

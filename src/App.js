@@ -5,7 +5,9 @@ import Berechnung from './Components/Berechnungen.js';
 import Auth from './Components/auth/auth.jsx';
 import ProtectedRoute from './Components/auth/ProtectedRoute.jsx';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Rechner from './Components/rechner/rechner.jsx';
+import UserInput from './Components/userInput/userInput.jsx'
+import SwitchAuswertung from './Components/Auswertung/switchAusertung.jsx';
+
 
 function AppContent() {
 
@@ -20,7 +22,8 @@ function AppContent() {
           
           <Route path="/rechner" element={
             <ProtectedRoute>
-              <Rechner/> 
+              <UserInput/>
+              <SwitchAuswertung/>
             </ProtectedRoute>}> 
           </Route>
             

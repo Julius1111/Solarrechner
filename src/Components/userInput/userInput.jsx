@@ -5,6 +5,7 @@ import InputRadioButton from '../inputRadioButton/inputRadioButton.jsx';
 import InputString from '../inputString/inputString.jsx'
 import { useCalculator } from '../CalculatorContext.js';
 import supabase from '../../config/superbaseClient.js';
+import LogOut from '../auth/LogOut.jsx';
 
 const Rechner = () => {
   
@@ -140,6 +141,8 @@ const Rechner = () => {
     <div className='centerH1'>
         <h1 >Solar Rechner</h1>
     </div>
+
+    <LogOut/>
 
     <div className='containerInput margin'>
         <p className='customSchrift'>Projekt</p>

@@ -2,7 +2,7 @@ import React, { useState} from "react";
 import InputRadioButton from "../inputRadioButton/inputRadioButton";
 import Auswertung from "./auswertung";
 import supabase from "../../config/superbaseClient";
-import './dropDown.css';
+import './switchAuswertung.css';
 import DynamicTable from "./dynamicTable";
 import Charts from "./charts";
 

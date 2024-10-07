@@ -1,0 +1,29 @@
+
+.logoutContainer{
+    width: 100%; 
+    display: flex;
+    justify-content: center;
+}
+
+.logoutButton {
+    padding: 0.5rem 1rem;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    margin: 0rem 1rem 1rem 1rem;
+    max-width: 500px;
+    width: 100%;
+}
+
+.logoutButton:hover {
+    background-color: #c0392b; 
+}
+
+.logoutButton:focus {
+    outline: none;
+}
