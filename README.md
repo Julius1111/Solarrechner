@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# Solarrechner
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Beschreibung
 
-## Available Scripts
+Der **Solarrechner** ist eine Webanwendung zur Berechnung der Rentabilität einer Solaranlage. Nutzer können ihre Daten eingeben, um eine Berechnung der Einsparungen, Energieerzeugung und des Amortisationszeitraums zu erhalten. Das Backend verwendet Supabase für Benutzer-Authentifizierung und Datenverwaltung. Es gibt die Möglichkeit, sich entweder mit E-Mail und Passwort zu authentifizieren oder anonym einzuloggen.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Benutzer-Authentifizierung:**
+  - Registrierung und Login per E-Mail und Passwort.
+  - Anonymer Login, um die Anwendung ohne Registrierung zu nutzen.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Berechnung der Rentabilität:**
+  - Benutzer können Angaben zu den Kosten, der Energieerzeugung und den Betriebskosten einer Solaranlage machen.
+  - Das System zeigt die jährlichen Erträge und den Amortisationszeitraum an.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Dynamische Diagramme:**
+  - Visualisierung der Renditen über die Zeit.
+  - Interaktive Charts mit der Recharts-Bibliothek.
 
-### `npm test`
+- **Supabase-Integration:**
+  - Verwaltung von Benutzerkonten und Datenspeicherung.
+  - Unterstützung von anonymen Sitzungen.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologiestack
 
-### `npm run build`
+- **Frontend:**
+  - React.js: Hauptframework für die Benutzeroberfläche.
+  - Recharts: Bibliothek zur Darstellung dynamischer Diagramme.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Backend:**
+  - Supabase: Für Authentifizierung und Echtzeit-Datenverwaltung.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Voraussetzungen
 
-### `npm run eject`
+Stelle sicher, dass du folgende Programme installiert hast:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Node.js** (Version 16+ empfohlen)
+- **npm** (Node Package Manager, kommt mit Node.js)
+- **Supabase-Konto** (für die API-Schlüssel und Datenbank-Einstellungen)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Einrichtung
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. **Repository klonen:**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+   ```bash
+   git clone https://github.com/deinbenutzername/solarrechner.git
+   cd solarrechner
+   
+  3. Umgebungsvariablen einrichten
+  
+  Erstelle eine .env-Datei im Hauptverzeichnis und füge die folgenden Schlüssel mit deinen Supabase-Projekt-Details hinzu:
+  
+  bash
+  
+  REACT_APP_SUPERBASE_URL=dein-supabase-url
+  REACT_APP_ANON_KEY=dein-supabase-anon-key
+  
+  4. Entwicklungsserver starten
+  
+  Um den Entwicklungsserver zu starten, verwende den folgenden Befehl:
+  
+  bash
+  
+  npm start
+  
+  Die Anwendung wird lokal unter http://localhost:3000 ausgeführt.
+  5. Anwendung bereitstellen
+  
+  Um die Anwendung für die Produktion zu bauen und auf GitHub Pages bereitzustellen, führe folgende Befehle aus:
+  
+  bash
+  
+  npm run build
+  npm run deploy
