@@ -7,7 +7,7 @@ Der **Solarrechner** ist eine Webanwendung zur Berechnung der Rentabilität eine
 ## Live-Demo 
 
 Sie können den Solarrechner unter folgendem Link testen:
-[Solarrechner Demo]([https://julius1111.github.io/Photovoltaikrechner/])
+[Solarrechner Demo](https://julius1111.github.io/Photovoltaikrechner/)
 
 ## Features
 
