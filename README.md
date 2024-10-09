@@ -67,15 +67,6 @@ Stelle sicher, dass du folgende Programme installiert hast:
    ```
    Die Anwendung wird lokal unter `http://localhost:3000` ausgeführt.
 
-## Bereitstellung
-
-Um die Anwendung für die Produktion zu bauen und auf GitHub Pages bereitzustellen, führe folgende Befehle aus:
-
-```bash
-npm run build
-npm run deploy
-```
-
 ## Lizenz
 
 Dieses Projekt ist unter der [MIT-Lizenz](LICENSE) lizenziert.
