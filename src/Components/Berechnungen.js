@@ -11,7 +11,7 @@ const Berechnung = () =>{
         gesKosten, 
         leistung,
         stromErtrag, 
-        eigenVerbrauch, 
+        eigenVerbrauch, setEigenVerbrauch,
         einspeiseVergutung, 
         stromPreis, 
         stromPreisErhohung, 
@@ -24,10 +24,45 @@ const Berechnung = () =>{
         betriebsKostenProzent, 
         updateCalculatedData,
         saveBerechnung, setSaveBerechnung,
+        stromVerbrauch, setStromVerbrauch,
+        baterieKapazitat, setBaterieKapazitat, 
       } = useCalculator();
     
+    // get data eigenverbrauch from DB
+    async function getEigenvrauchAutogratie(stromVerbrauch, leistung, baterieKapazitat) {
+        const { data, error } = await supabase
+            .from("Eigenverbrauch")
+            .select("jahresStromVerbrauch, photovoltaikLeistung, batterieKapazitaet, autarkieGrad, eigenVerbrauchsAnteil")
+            .gte("jahresStromVerbrauch", stromVerbrauch - 50)
+            .lte("jahresStromVerbrauch", stromVerbrauch + 50)
+            .gte("photovoltaikLeistung", leistung - 0.25)
+            .lte("photovoltaikLeistung", leistung + 0.25)
+            .gte("batterieKapazitaet", baterieKapazitat - 0.5)
+            .lte("batterieKapazitaet", baterieKapazitat + 0.5)
+            .order("jahresStromVerbrauch", { ascending: true })
+            .order("photovoltaikLeistung", { ascending: true })
+            .order("batterieKapazitaet", { ascending: true })
+            .limit(1); // Nimm nur den besten Treffer
+    
+        if (error) {
+            console.error("Fehler:", error);
+            return null;
+        }
+    
+        //console.log("Bester Treffer:", data[0]);
+        return data[0];
+    }
 
-    const berechneUndAktualisieren = () => {
+    // set Eigenverbrauch
+    async function returnAndSetEigenverbauch() {
+        const ergebnis = await getEigenvrauchAutogratie(stromVerbrauch, leistung, baterieKapazitat);
+        // undefined abfangen bei falscher eingabe
+        if(ergebnis == undefined) return
+        setEigenVerbrauch(ergebnis.eigenVerbrauchsAnteil); // set input value 
+        return(ergebnis.eigenVerbrauchsAnteil / 100)
+    }
+
+    async function berechneUndAktualisieren() {
         
         // Variablen für die Berechnung
         let verguetungEEG = 0; 
@@ -56,12 +91,12 @@ const Berechnung = () =>{
         let stromKosten = stromPreis;
         let erzeugterStrom = stromErtrag; 
         let betrieb = betriebsKosten;
-        let eig = eigenVerbrauch / 100.0; 
+        let eig = await returnAndSetEigenverbauch(); //eigenVerbrauch / 100.0; 
         const faktorBetKostErhohung = betriebsKostenErhohung / 100;
         const faktorStromVerlust = stromVerlust / 100.0;
         const faktorVergleichsRendite = 1 + vergleichRenditeProzent / 100.0;
         const faktorStromPreisErhohung = stromPreisErhohung / 100.0;
-
+            
 
         // prüfen ob betriebskosten in Prozent gegeben sind
         if(betriebsKostenEuroProzent === '0')
@@ -239,7 +274,7 @@ const Berechnung = () =>{
     // bei änderung Aktualisieren
     useEffect(() => {
         berechneUndAktualisieren();
-      }, [saveBerechnung ,einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent]);
+      }, [saveBerechnung ,einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent, baterieKapazitat, stromVerbrauch]);
 
     return null;
 }

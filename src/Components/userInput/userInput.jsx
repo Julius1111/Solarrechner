@@ -29,6 +29,8 @@ const Rechner = () => {
         betriebsKostenProzent, setBetriebsKostenProzent,
         loadeData ,
         setSaveBerechnung, 
+        stromVerbrauch, setStromVerbrauch,
+        baterieKapazitat, setBaterieKapazitat, 
       } = useCalculator();
       
     let dataToSave = {idProjekt, einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent};
@@ -78,16 +80,12 @@ const Rechner = () => {
 
     const fatchData = async () => {
 
-        
-
         // Prüfen ob bereits vorhanden
         const { data: existingData, error: selectError } = await supabase
             .from('Userinput')
             .select('idProjekt')
             .eq('idProjekt', idProjekt)
         
-           
-
         if (selectError) {
             console.log('Fehler beim Überprüfen auf vorhandene Daten:', selectError);
             return;
@@ -159,8 +157,9 @@ const Rechner = () => {
         
     </div>
 
+
     <div className='container_rechner'>
-        
+
         <div className='containerInput'>
 
             <p className='customSchrift'>PV-Anlage</p>
@@ -173,18 +172,28 @@ const Rechner = () => {
                     
             <div className='rechner_input'>
                 <p>Anschafungskosten in €</p>
-                <InputNumber value={gesKosten} setValue={setGesKosten} setIsError={setIsError} />
+                <InputNumber value={gesKosten} setValue={setGesKosten} setIsError={setIsError} min={0} max={100000} />
             </div>
                     
             <div className='rechner_input'>
                 <p>Leistung der PV-Anlage in kWp</p>
-                <InputNumber value={leistung} setValue={setLeistung} setIsError={setIsError} />
+                <InputNumber value={leistung} setValue={setLeistung} setIsError={setIsError} min={0} max={20}/>
+            </div>
+
+            <div className='rechner_input'>
+                <p>Batterie Kapazität in kWh</p>
+                <InputNumber value={baterieKapazitat} setValue={setBaterieKapazitat} setIsError={setIsError} min={0} max={20}/>
             </div>
         </div>
 
         <div className='containerInput'>
 
             <p className='customSchrift'>Ertrag und Strompreis</p>
+
+            <div className='rechner_input'>
+                <p>Jählicher Stromverbrauch in kwh</p>
+                <InputNumber value={stromVerbrauch} setValue={setStromVerbrauch} setIsError={setIsError} max = {10000} min={2000}/>
+            </div>
 
             <div className='rechner_input'>
                 <p>Jählicher Stromertrag kwh pro kWp</p>
@@ -194,32 +203,32 @@ const Rechner = () => {
             {einspeiseModell === '0' && 
                 <div className='rechner_input'>
                     <p>Eigenverbrauch in %</p>
-                    <InputNumber value={eigenVerbrauch} setValue={setEigenVerbrauch} setIsError={setIsError} />
+                    <InputNumber value={eigenVerbrauch} setValue={setEigenVerbrauch} setIsError={setIsError} disabled={true} />
                 </div>
             }
 
             <div className='rechner_input'>
                 <p>Einspeisevergütung in €</p>
-                <InputNumber value={einspeiseVergutung} setValue={setEinspeiseVergutung}  setIsError={setIsError}/>
+                <InputNumber value={einspeiseVergutung} setValue={setEinspeiseVergutung}  setIsError={setIsError} min={0} max={10}/>
             </div>
 
             {einspeiseModell === '0' && 
             <>
                 <div className='rechner_input'>
                     <p>Strompreis pro kwh in €</p>
-                    <InputNumber value={stromPreis} setValue={setStromPreis} setIsError={setIsError} />
+                    <InputNumber value={stromPreis} setValue={setStromPreis} setIsError={setIsError} min={0} max={10}/>
                 </div>
 
                 <div className='rechner_input'>
                     <p>Strompreis erhöhung pro Jahr in %</p>
-                    <InputNumber value={stromPreisErhohung} setValue={setStromPreisErhohung} setIsError={setIsError} />
+                    <InputNumber value={stromPreisErhohung} setValue={setStromPreisErhohung} setIsError={setIsError} min={0} max={100}/>
                 </div>
             </>
             }
 
             <div className='rechner_input'>
                 <p>Minderung Stromertrag pro Jahr in %</p>
-                <InputNumber value={stromVerlust} setValue={setStromVerlust}  setIsError={setIsError}/>
+                <InputNumber value={stromVerlust} setValue={setStromVerlust}  setIsError={setIsError} min={0} max={10}/>
             </div>
 
         </div>
@@ -236,20 +245,20 @@ const Rechner = () => {
             {betriebsKostenEuroProzent === '0' && 
             <div className='rechner_input'>
                 <p>Betriebskosten in % </p>
-                <InputNumber value={betriebsKostenProzent} setValue={setBetriebsKostenProzent} setIsError={setIsError} />
+                <InputNumber value={betriebsKostenProzent} setValue={setBetriebsKostenProzent} setIsError={setIsError} min={0} max={100}/>
             </div>
             }   
 
             {betriebsKostenEuroProzent === '1' && 
             <div className='rechner_input'>
                 <p>Betriebskosten in €</p>
-                <InputNumber value={betriebsKosten} setValue={setBetriebsKosten} setIsError={setIsError} />
+                <InputNumber value={betriebsKosten} setValue={setBetriebsKosten} setIsError={setIsError} min={0} max={10000} />
             </div>
             }   
 
             <div className='rechner_input'>
                 <p>Betriebskostensteigerung pro Jahr in %</p>
-                <InputNumber value={betriebsKostenErhohung} setValue={setBetriebsKostenErhohung}  setIsError={setIsError}/>
+                <InputNumber value={betriebsKostenErhohung} setValue={setBetriebsKostenErhohung}  setIsError={setIsError} min={0} max={100}/>
             </div>
         </div>
        
@@ -259,12 +268,12 @@ const Rechner = () => {
 
             <div className='rechner_input'>
                 <p>Zeitraum in Jahren</p>
-                <InputNumber value={zeitRaum} setValue={setZeitRaum}  setIsError={setIsError}/>
+                <InputNumber value={zeitRaum} setValue={setZeitRaum}  setIsError={setIsError} min={0} max={100}/>
             </div>
 
             <div className='rechner_input'>
                 <p>vergleich Rendite in %</p>
-                <InputNumber value={vergleichRenditeProzent} setValue={setVergleichRenditeProzent}  setIsError={setIsError}/>
+                <InputNumber value={vergleichRenditeProzent} setValue={setVergleichRenditeProzent}  setIsError={setIsError} min={-100} max={100}/>
             </div>
         </div>
     </div>

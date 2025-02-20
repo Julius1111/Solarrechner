@@ -24,6 +24,10 @@ export const CalculatorProvider = ({ children }) => {
   const [vergleichRenditeProzent, setVergleichRenditeProzent] = useState(5);
   const [betriebsKostenEuroProzent, setBetriebsKostenEuroProzent] = useState('0');
   const [betriebsKostenProzent, setBetriebsKostenProzent] = useState(1.5);
+  const [baterieKapazitat, setBaterieKapazitat] = useState(0);
+  const [stromVerbrauch, setStromVerbrauch] = useState(4000);
+  
+
 
   // Berrechnerte Daten
   const [calculatedData, setCalculatedData] = useState({
@@ -99,6 +103,9 @@ const loadeData = (data) => {
     vergleichRenditeProzent, setVergleichRenditeProzent,
     betriebsKostenEuroProzent, setBetriebsKostenEuroProzent,
     betriebsKostenProzent, setBetriebsKostenProzent,
+    stromVerbrauch, setStromVerbrauch,
+    baterieKapazitat, setBaterieKapazitat, 
+
     updateCalculatedData, calculatedData, 
     loadeData,
     saveBerechnung, setSaveBerechnung // trigger funktion to save on Database
