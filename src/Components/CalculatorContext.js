@@ -24,6 +24,14 @@ export const CalculatorProvider = ({ children }) => {
   const [vergleichRenditeProzent, setVergleichRenditeProzent] = useState(5);
   const [betriebsKostenEuroProzent, setBetriebsKostenEuroProzent] = useState('0');
   const [betriebsKostenProzent, setBetriebsKostenProzent] = useState(1.5);
+  const [baterieKapazitat, setBaterieKapazitat] = useState(0);
+  const [stromVerbrauch, setStromVerbrauch] = useState(4000);
+
+  const [angel, setAngel] = useState(35);
+  const [azimuth, setAzimuth] = useState(0); // 0=south, 90=west, -90=east.
+  
+  // Position
+  const [markerPosition, setMarkerPosition] = useState([51.505, -0.09]);
 
   // Berrechnerte Daten
   const [calculatedData, setCalculatedData] = useState({
@@ -77,6 +85,9 @@ const loadeData = (data) => {
     setVergleichRenditeProzent(objekt.vergleichRenditeProzent);
     setBetriebsKostenEuroProzent(objekt.betriebsKostenEuroProzent);
     setBetriebsKostenProzent(objekt.betriebsKostenProzent);
+    setAngel(objekt.angel);
+    setAzimuth(objekt.azimuth);
+    setBaterieKapazitat(objekt.baterieKapazitat);
 }
 
 
@@ -99,6 +110,14 @@ const loadeData = (data) => {
     vergleichRenditeProzent, setVergleichRenditeProzent,
     betriebsKostenEuroProzent, setBetriebsKostenEuroProzent,
     betriebsKostenProzent, setBetriebsKostenProzent,
+    stromVerbrauch, setStromVerbrauch,
+    baterieKapazitat, setBaterieKapazitat, 
+    
+    angel, setAngel,
+    azimuth, setAzimuth,
+
+    markerPosition,setMarkerPosition,
+
     updateCalculatedData, calculatedData, 
     loadeData,
     saveBerechnung, setSaveBerechnung // trigger funktion to save on Database

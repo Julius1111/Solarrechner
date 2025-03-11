@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useCalculator  } from "./CalculatorContext";
 import supabase from "../config/superbaseClient";
+
+import getPVGISData from "./PVGIS";
 
 const Berechnung = () =>{
     
@@ -10,8 +12,8 @@ const Berechnung = () =>{
         einspeiseModell, 
         gesKosten, 
         leistung,
-        stromErtrag, 
-        eigenVerbrauch, 
+        stromErtrag, setStromErtrag,
+        eigenVerbrauch, setEigenVerbrauch,
         einspeiseVergutung, 
         stromPreis, 
         stromPreisErhohung, 
@@ -24,11 +26,55 @@ const Berechnung = () =>{
         betriebsKostenProzent, 
         updateCalculatedData,
         saveBerechnung, setSaveBerechnung,
+        stromVerbrauch, 
+        baterieKapazitat, 
+        angel,
+        azimuth,
+        markerPosition,
       } = useCalculator();
     
+    // get data eigenverbrauch from DB
+    async function getEigenvrauchAutogratie(stromVerbrauch, leistung, baterieKapazitat) {
+        const { data, error } = await supabase
+            .from("Eigenverbrauch")
+            .select("jahresStromVerbrauch, photovoltaikLeistung, batterieKapazitaet, autarkieGrad, eigenVerbrauchsAnteil")
+            .gte("jahresStromVerbrauch", stromVerbrauch - 50)
+            .lte("jahresStromVerbrauch", stromVerbrauch + 50)
+            .gte("photovoltaikLeistung", leistung - 0.25)
+            .lte("photovoltaikLeistung", leistung + 0.25)
+            .gte("batterieKapazitaet", baterieKapazitat - 0.5)
+            .lte("batterieKapazitaet", baterieKapazitat + 0.5)
+            .order("jahresStromVerbrauch", { ascending: true })
+            .order("photovoltaikLeistung", { ascending: true })
+            .order("batterieKapazitaet", { ascending: true })
+            .limit(1); // Nimm nur den besten Treffer
+    
+        if (error) {
+            console.error("Fehler:", error);
+            return null;
+        }
+    
+        //console.log("Bester Treffer:", data[0]);
+        return data[0];
+    }
 
-    const berechneUndAktualisieren = () => {
+    // return Eigenverbrauch / set to input 
+    async function returnAndSetEigenverbauch() {
+        const ergebnis = await getEigenvrauchAutogratie(stromVerbrauch, leistung, baterieKapazitat);
+        // undefined abfangen bei falscher eingabe
+        if(ergebnis == undefined) return
+        setEigenVerbrauch(ergebnis.eigenVerbrauchsAnteil); // set input value 
+        return(ergebnis.eigenVerbrauchsAnteil / 100)
+    }
+
+    
+
+    async function berechneUndAktualisieren() {
         
+        // StromErtrag in kWh pro kWp daten fetchen
+        const fetchData = await getPVGISData(markerPosition[0], markerPosition[1], 1, 14, angel, azimuth, zeitRaum);
+        setStromErtrag(fetchData);
+
         // Variablen für die Berechnung
         let verguetungEEG = 0; 
         let verguetungEig = 0; 
@@ -56,12 +102,12 @@ const Berechnung = () =>{
         let stromKosten = stromPreis;
         let erzeugterStrom = stromErtrag; 
         let betrieb = betriebsKosten;
-        let eig = eigenVerbrauch / 100.0; 
+        let eig = await returnAndSetEigenverbauch(); //eigenVerbrauch / 100.0; 
         const faktorBetKostErhohung = betriebsKostenErhohung / 100;
         const faktorStromVerlust = stromVerlust / 100.0;
         const faktorVergleichsRendite = 1 + vergleichRenditeProzent / 100.0;
         const faktorStromPreisErhohung = stromPreisErhohung / 100.0;
-
+            
 
         // prüfen ob betriebskosten in Prozent gegeben sind
         if(betriebsKostenEuroProzent === '0')
@@ -186,6 +232,7 @@ const Berechnung = () =>{
             gesErtragVer: gesErtragVer,
             gesUberschuss: gesUberschuss,
             co2Einsparung: co2Einsparung,
+
         };
 
         // nur Daten speichern wenn Button gedrückt wird 
@@ -236,10 +283,25 @@ const Berechnung = () =>{
         updateCalculatedData(data);
     };
 
+    
     // bei änderung Aktualisieren
+    const timeOutRef = useRef(null); 
+
     useEffect(() => {
-        berechneUndAktualisieren();
-      }, [saveBerechnung ,einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent]);
+        if(timeOutRef.current){
+            clearTimeout(timeOutRef.current);
+        }
+
+        // Setze einen neuen Timeout
+        timeOutRef.current = setTimeout(() =>{
+            berechneUndAktualisieren();
+        }, 500); // Wartezeit 500ms
+
+        return () => {
+            clearTimeout(timeOutRef.current);
+        };
+          
+    }, [markerPosition, angel, azimuth, saveBerechnung, einspeiseModell, gesKosten, leistung, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent, baterieKapazitat, stromVerbrauch]);
 
     return null;
 }

@@ -1,0 +1,56 @@
+/* Container für den Header */
+.containerHeader {
+    position: relative;
+    min-height: 50vh;
+    background-image: url("./Header.webp");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2rem;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden;
+
+    /* Flexbox für die Zentrierung */
+    display: flex;
+    justify-content: center; /* Horizontal zentrieren */
+    align-items: center; /* Vertikal zentrieren */
+}
+
+/* Overlay für den Text */
+.containerHeader::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Dunkles Overlay für besseren Kontrast */
+}
+
+/* Text im Header */
+.centerH1 {
+    position: relative; /* Setzt den Text über das Overlay */
+    z-index: 1; /* Stellt sicher, dass der Text oben angezeigt wird */
+    color: #fff; /* Weiße Schriftfarbe */
+    font-size: 3rem; /* Große Schrift */
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    letter-spacing: 2px; /* Etwas mehr Abstand zwischen den Buchstaben */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6); /* Weicher Schlagschatten für den Text */
+    text-align: center; /* Horizontale Zentrierung des Textes */
+}
+
+/* Responsives Design */
+@media only screen and (max-width: 768px) {
+    .centerH1 {
+        font-size: 2.5rem; /* Kleinere Schrift auf kleinen Bildschirmen */
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .centerH1 {
+        font-size: 2rem; /* Noch kleinere Schrift auf mobilen Geräten */
+    }
+}
