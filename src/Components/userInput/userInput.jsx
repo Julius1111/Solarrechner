@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './userInput.css';
 import InputNumber from '../inputNumber/inputNumber.jsx';
 import InputRadioButton from '../inputRadioButton/inputRadioButton.jsx';
@@ -7,8 +7,12 @@ import { useCalculator } from '../CalculatorContext.js';
 import supabase from '../../config/superbaseClient.js';
 import LogOut from '../auth/LogOut.jsx';
 
+import LocationInput from './location/locationInput.jsx';
+
 const Rechner = () => {
   
+    const mapRef = useRef();
+
     const {
         isError, setIsError,
         idProjekt, setIdProjekt,
@@ -31,9 +35,12 @@ const Rechner = () => {
         setSaveBerechnung, 
         stromVerbrauch, setStromVerbrauch,
         baterieKapazitat, setBaterieKapazitat, 
+        angel, setAngel,
+        azimuth, setAzimuth,
+        markerPosition
       } = useCalculator();
       
-    let dataToSave = {idProjekt, einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent};
+    let dataToSave = {idProjekt, einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent, angel, azimuth, baterieKapazitat, markerPosition};
 
     const saveData = async () => {
         
@@ -107,6 +114,7 @@ const Rechner = () => {
             if(fatchedData)
             {
                 loadeData(fatchedData);
+                mapRef.current.changePosition(fatchedData.markerPosition[0], fatchedData.markerPosition[1]); // funktion um Marker und viewport zu setzen  // wichtig nicht als array übergeben also nicht in [] --> error latlng null
             }
         }
     }
@@ -125,8 +133,6 @@ const Rechner = () => {
         // toggel variable to trigger function 
          setSaveBerechnung(1);
         
-        
-       
     };
 
     const handleLoadeData = () => {
@@ -141,6 +147,7 @@ const Rechner = () => {
     </div>
 
     <LogOut/>
+
 
     <div className='containerInput margin'>
         <p className='customSchrift'>Projekt</p>
@@ -159,6 +166,12 @@ const Rechner = () => {
 
 
     <div className='container_rechner'>
+        
+        
+        <div className='containerInput containerMap'>
+            <LocationInput ref={mapRef}/>
+        </div>
+       
 
         <div className='containerInput'>
 
@@ -184,6 +197,16 @@ const Rechner = () => {
                 <p>Batterie Kapazität in kWh</p>
                 <InputNumber value={baterieKapazitat} setValue={setBaterieKapazitat} setIsError={setIsError} min={0} max={20}/>
             </div>
+
+            <div className='rechner_input'>
+                <p>Neigungswinkel in °</p>
+                <InputNumber value={angel} setValue={setAngel} setIsError={setIsError} min={0} max={90}/>
+            </div>
+
+            <div className='rechner_input'>
+                <p>Azimuth (Ausrichtung Süd = 0, Ost = -90, West = 90, Nord = +-180)</p>
+                <InputNumber value={azimuth} setValue={setAzimuth} setIsError={setIsError} min={-180} max={180}/> 
+            </div>
         </div>
 
         <div className='containerInput'>
@@ -197,7 +220,7 @@ const Rechner = () => {
 
             <div className='rechner_input'>
                 <p>Jählicher Stromertrag kwh pro kWp</p>
-                <InputNumber value={stromErtrag} setValue={setStromErtrag} setIsError={setIsError} />
+                <InputNumber value={stromErtrag} setValue={setStromErtrag} setIsError={setIsError} disabled={true}/>
             </div>
 
             {einspeiseModell === '0' && 

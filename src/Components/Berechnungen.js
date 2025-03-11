@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useCalculator  } from "./CalculatorContext";
 import supabase from "../config/superbaseClient";
+
+import getPVGISData from "./PVGIS";
 
 const Berechnung = () =>{
     
@@ -10,7 +12,7 @@ const Berechnung = () =>{
         einspeiseModell, 
         gesKosten, 
         leistung,
-        stromErtrag, 
+        stromErtrag, setStromErtrag,
         eigenVerbrauch, setEigenVerbrauch,
         einspeiseVergutung, 
         stromPreis, 
@@ -24,8 +26,11 @@ const Berechnung = () =>{
         betriebsKostenProzent, 
         updateCalculatedData,
         saveBerechnung, setSaveBerechnung,
-        stromVerbrauch, setStromVerbrauch,
-        baterieKapazitat, setBaterieKapazitat, 
+        stromVerbrauch, 
+        baterieKapazitat, 
+        angel,
+        azimuth,
+        markerPosition,
       } = useCalculator();
     
     // get data eigenverbrauch from DB
@@ -53,7 +58,7 @@ const Berechnung = () =>{
         return data[0];
     }
 
-    // set Eigenverbrauch
+    // return Eigenverbrauch / set to input 
     async function returnAndSetEigenverbauch() {
         const ergebnis = await getEigenvrauchAutogratie(stromVerbrauch, leistung, baterieKapazitat);
         // undefined abfangen bei falscher eingabe
@@ -62,8 +67,14 @@ const Berechnung = () =>{
         return(ergebnis.eigenVerbrauchsAnteil / 100)
     }
 
+    
+
     async function berechneUndAktualisieren() {
         
+        // StromErtrag in kWh pro kWp daten fetchen
+        const fetchData = await getPVGISData(markerPosition[0], markerPosition[1], 1, 14, angel, azimuth, zeitRaum);
+        setStromErtrag(fetchData);
+
         // Variablen für die Berechnung
         let verguetungEEG = 0; 
         let verguetungEig = 0; 
@@ -221,6 +232,7 @@ const Berechnung = () =>{
             gesErtragVer: gesErtragVer,
             gesUberschuss: gesUberschuss,
             co2Einsparung: co2Einsparung,
+
         };
 
         // nur Daten speichern wenn Button gedrückt wird 
@@ -271,10 +283,25 @@ const Berechnung = () =>{
         updateCalculatedData(data);
     };
 
+    
     // bei änderung Aktualisieren
+    const timeOutRef = useRef(null); 
+
     useEffect(() => {
-        berechneUndAktualisieren();
-      }, [saveBerechnung ,einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent, baterieKapazitat, stromVerbrauch]);
+        if(timeOutRef.current){
+            clearTimeout(timeOutRef.current);
+        }
+
+        // Setze einen neuen Timeout
+        timeOutRef.current = setTimeout(() =>{
+            berechneUndAktualisieren();
+        }, 500); // Wartezeit 500ms
+
+        return () => {
+            clearTimeout(timeOutRef.current);
+        };
+          
+    }, [markerPosition, angel, azimuth, saveBerechnung, einspeiseModell, gesKosten, leistung, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent, baterieKapazitat, stromVerbrauch]);
 
     return null;
 }
