@@ -142,9 +142,7 @@ const Rechner = () => {
 
   return (
     <>
-    <div className='centerH1'>
-        <h1 >Solar Rechner</h1>
-    </div>
+    
 
     <LogOut/>
 
