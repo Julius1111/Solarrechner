@@ -1,72 +1,53 @@
 # Solarrechner
 
 ## Beschreibung
-
-Der **Solarrechner** ist eine Webanwendung zur Berechnung der Rentabilität einer Solaranlage. Nutzer können ihre Daten eingeben, um eine Berechnung der Einsparungen, Energieerzeugung und des Amortisationszeitraums zu erhalten. Das Backend verwendet Supabase für Benutzer-Authentifizierung und Datenverwaltung. Es gibt die Möglichkeit, sich entweder mit E-Mail und Passwort zu authentifizieren oder anonym einzuloggen.
+Der **Solarrechner** ist eine Webanwendung zur Berechnung der Rentabilität von Photovoltaikanlagen. Nutzer können ihre individuellen Daten eingeben, um detaillierte Berechnungen zu Energieerzeugung, Kosteneinsparungen und Amortisationszeiträumen zu erhalten. Das Backend nutzt Supabase für die Benutzer-Authentifizierung und Datenverwaltung. Die Anwendung bietet sowohl eine vollständige Registrierung als auch einen anonymen Zugang.
 
 ## Live-Demo 
-
-Sie können den Solarrechner unter folgendem Link testen:
+Testen Sie den Solarrechner direkt in Ihrem Browser:
 [Solarrechner Demo](https://julius1111.github.io/Photovoltaikrechner/)
 
 ## Features
-
 - **Benutzer-Authentifizierung:**
-  - Registrierung und Login per E-Mail und Passwort.
-  - Anonymer Login, um die Anwendung ohne Registrierung zu nutzen.
-- **Berechnung der Rentabilität:**
-  - Benutzer können Angaben zu den Kosten, der Energieerzeugung und den Betriebskosten einer Solaranlage machen.
-  - Das System zeigt die jährlichen Erträge und den Amortisationszeitraum an.
-- **Dynamische Diagramme:**
-  - Visualisierung der Renditen über die Zeit.
-  - Interaktive Charts mit der Recharts-Bibliothek.
+  - Registrierung und Login per E-Mail und Passwort für die Speicherung Ihrer Berechnungen.
+  - Anonymer Login für schnelle Nutzung ohne Registrierung.
+
+- **Umfassende Rentabilitätsberechnung:**
+  - Erfassung von Anlagenkosten, Leistungsdaten, Strompreisen und Betriebskosten.
+  - Berechnung der jährlichen Erträge unter Berücksichtigung von Eigenverbrauch und Einspeisung.
+  - Präzise Ermittlung des Amortisationszeitraums und der langfristigen Rendite.
+
+- **Dynamische Visualisierungen:**
+  - Interaktive Diagramme zur Darstellung der finanziellen Entwicklung über die Lebensdauer der Anlage.
+  - Übersichtliche Visualisierung von Einnahmen, Ausgaben und Gewinnschwelle.
+
 - **Supabase-Integration:**
-  - Verwaltung von Benutzerkonten und Datenspeicherung.
-  - Unterstützung von anonymen Sitzungen.
+  - Sichere Verwaltung von Benutzerkonten und Datenspeicherung.
+  - Unterstützung von anonymen Sitzungen für datenschutzorientierte Nutzung.
+  - Edge Functions für den Zugriff auf die PVGIS API (Photovoltaic Geographical Information System) der Europäischen Kommission.
 
 ## Technologiestack
-
 - **Frontend:**
-  - React.js: Hauptframework für die Benutzeroberfläche.
-  - Recharts: Bibliothek zur Darstellung dynamischer Diagramme.
+  - React.js: Modernes JavaScript-Framework für die responsive Benutzeroberfläche.
+  - Recharts: Leistungsstarke Bibliothek zur Erstellung interaktiver Diagramme.
+
 - **Backend:**
-  - Supabase: Für Authentifizierung und Echtzeit-Datenverwaltung.
+  - Supabase:
+    - Authentifizierungssystem mit mehreren Anmeldeoptionen
+    - Relationale Datenbank für die Speicherung von Benutzerberechnungen
+    - Serverlose Funktionen für die Kommunikation mit externen Diensten
 
-## Installation
-
-### Voraussetzungen
-
-Stelle sicher, dass du folgende Programme installiert hast:
-- **Node.js** (Version 16+ empfohlen)
-- **npm** (Node Package Manager, kommt mit Node.js)
-- **Supabase-Konto** (für die API-Schlüssel und Datenbank-Einstellungen)
-
-### Einrichtung
-
-1. **Repository klonen:**
-   ```bash
-   git clone https://github.com/deinbenutzername/solarrechner.git
-   cd solarrechner
-   ```
-
-2. **Abhängigkeiten installieren:**
-   ```bash
-   npm install
-   ```
-
-3. **Umgebungsvariablen einrichten:**
-   Erstelle eine `.env`-Datei im Hauptverzeichnis und füge die folgenden Schlüssel mit deinen Supabase-Projekt-Details hinzu:
-   ```
-   REACT_APP_SUPERBASE_URL=dein-supabase-url
-   REACT_APP_ANON_KEY=dein-supabase-anon-key
-   ```
-
-4. **Entwicklungsserver starten:**
-   ```bash
-   npm start
-   ```
-   Die Anwendung wird lokal unter `http://localhost:3000` ausgeführt.
+## Nutzung
+1. Öffnen Sie die [Solarrechner-Demo](https://julius1111.github.io/Photovoltaikrechner/).
+2. Wählen Sie zwischen Registrierung oder anonymem Login.
+3. Geben Sie Ihre Anlagenparameter ein:
+   - Anlagen Standort
+   - Installationskosten
+   - Leistung in kWp
+   - Ausrichtung und Neigung
+   - Aktuelle Stromkosten
+5. Prüfen Sie die berechneten Werte und Diagramme zur Rentabilität.
+6. Bei Bedarf können Sie verschiedene Szenarien vergleichen oder Ihre Berechnungen speichern.
 
 ## Lizenz
-
 Dieses Projekt ist unter der [MIT-Lizenz](LICENSE) lizenziert.
