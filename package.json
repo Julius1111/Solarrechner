@@ -1,9 +1,13 @@
 {
   "name": "solarrechner",
-  "version": "0.1.0",
-  "homepage": "https://Julius1111.github.io/solarrechner",
+  "version": "0.2.0",
+  "homepage": "https://julius1111.github.io/Photovoltaikrechner",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.1.0",
+    "@mui/styled-engine-sc": "^7.1.0",
     "@supabase/supabase-js": "^2.45.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -14,8 +18,9 @@
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.26.2",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "recharts": "^2.12.7",
+    "styled-components": "^6.1.18",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -46,8 +51,12 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "gh-pages": "^6.1.1",
+    "gh-pages": "^6.3.0",
     "supabase": "^2.15.8",
     "typescript": "^4.9.5"
+  },
+  "overrides": {
+    "nth-check": "^2.0.1",
+    "postcss": "^8.4.31"
   }
 }

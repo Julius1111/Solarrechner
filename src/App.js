@@ -12,7 +12,7 @@ import Header from './Components/Header/header.jsx';
 function AppContent() {
 
   return (
-    <Router>
+    <Router basename="/Photovoltaikrechner">
       <div className="App">
       
         <Berechnung/>

@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import './userInput.css';
 import InputNumber from '../inputNumber/inputNumber.jsx';
 import InputRadioButton from '../inputRadioButton/inputRadioButton.jsx';
-import InputString from '../inputString/inputString.jsx'
+import InputProjekt from '../inputString/inputProjekt.jsx';
 import { useCalculator } from '../CalculatorContext.js';
 import supabase from '../../config/superbaseClient.js';
 import LogOut from '../auth/LogOut.jsx';
@@ -81,7 +81,7 @@ const Rechner = () => {
         }
 
         if(data){
-            console.log(data);
+            //console.log(data);
         }
     }
 
@@ -119,6 +119,8 @@ const Rechner = () => {
         }
     }
 
+    const [newRender, setNewRender] = useState(""); // variable ändern zum abrufen der neuen IDs
+
     const handleSave = () => {
         // Abbruch bei fehlender Eingabe
         if(isError) 
@@ -133,6 +135,7 @@ const Rechner = () => {
         // toggel variable to trigger function 
          setSaveBerechnung(1);
         
+         setNewRender(idProjekt); // ändern der Variable
     };
 
     const handleLoadeData = () => {
@@ -152,7 +155,8 @@ const Rechner = () => {
 
         <div className='rechner_input '>
             <p>Name des Projektes</p>
-            <InputString value={idProjekt} setValue={setIdProjekt} setIsError={setIsError}></InputString>
+            
+            <InputProjekt value={idProjekt} setValue={setIdProjekt} setIsError={setIsError} getNewIDs={newRender}></InputProjekt>
         </div>
 
         <div className='centerButton'>

@@ -1,11 +1,9 @@
-import React, { useState, useRef, useImperativeHandle, useEffect, useContext } from 'react';
+import React, { useState, useRef, useImperativeHandle, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMap, useMapEvent } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './locationInput.css';
 import L from 'leaflet';
 import { useCalculator } from '../../CalculatorContext.js';
-
-import  getPVGISData  from '../../PVGIS.jsx';
 
 const defaultIcon = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -72,7 +70,7 @@ const DraggableMarker = React.forwardRef(({ setPosition }, ref) => {
     useImperativeHandle(ref, () => ({
         changeView:  (latLong) =>{  
             setDraggable(false); 
-            map.setView(latLong);
+            map.setView(latLong, 15); // 15 = zoom
             markerRef.current.setLatLng(latLong)
         }
     }));
@@ -101,7 +99,6 @@ const LocationInput = React.forwardRef(({}, ref) => {
 
     const getCurrentPosition = () =>{
         
-
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(success, error);
           } else {
