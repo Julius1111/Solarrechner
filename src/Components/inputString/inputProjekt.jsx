@@ -35,14 +35,17 @@ const InputProjekt = ({ value, setValue, setIsError, getNewIDs }) => {
         }
 
         if (data) {
-            const arrayData =  data.map((item) => item.idProjekt)
-            if(!arrayData.includes(getNewIDs))
+            let arrayData = data.map((item) => item.idProjekt)
+
+            arrayData = arrayData.filter(item => item && item.trim() !== "");
+            
+            
+            if(!arrayData.includes(getNewIDs) && getNewIDs !=="")
             {
                 arrayData.push(getNewIDs);
             }
             setIds(arrayData);
-
-            console.log(arrayData)
+            
         }
     }
 
