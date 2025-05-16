@@ -40,10 +40,10 @@ const Rechner = () => {
         markerPosition
       } = useCalculator();
       
-    let dataToSave = {idProjekt, einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent, angel, azimuth, baterieKapazitat, markerPosition};
+    let dataToSave = {idProjekt, einspeiseModell, gesKosten, leistung, stromErtrag, eigenVerbrauch, einspeiseVergutung, stromPreis, stromPreisErhohung, betriebsKosten, betriebsKostenErhohung, stromVerlust, zeitRaum, vergleichRenditeProzent, betriebsKostenEuroProzent, betriebsKostenProzent, angel, azimuth, baterieKapazitat, markerPosition, stromVerbrauch};
 
     const saveData = async () => {
-        
+
         // Prüfen ob bereits vorhanden
         const { data: existingData, error: selectError } = await supabase
             .from('Userinput')
@@ -133,9 +133,9 @@ const Rechner = () => {
         saveData();
 
         // toggel variable to trigger function 
-         setSaveBerechnung(1);
+        setSaveBerechnung(1);
         
-         setNewRender(idProjekt); // ändern der Variable
+        setNewRender(idProjekt); // ändern der Variable
     };
 
     const handleLoadeData = () => {

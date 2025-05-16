@@ -88,6 +88,7 @@ const loadeData = (data) => {
     setAngel(objekt.angel);
     setAzimuth(objekt.azimuth);
     setBaterieKapazitat(objekt.baterieKapazitat);
+    setStromVerbrauch(objekt.stromVerbrauch);
 }
 
 
